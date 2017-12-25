@@ -12,6 +12,15 @@ class Ui {
     return instance;
   }
 
+  lazyLoadImg(item) {
+    [].forEach.call(item.querySelectorAll('img[data-src]'), (img) => {
+      img.setAttribute('src', img.getAttribute('data-src'));
+      img.onload = function() {
+        img.removeAttribute('data-src');
+      };
+    });
+  }
+
   isScrolledIntoView(el) {
     var elemTop = el.getBoundingClientRect().top;
     var elemBottom = el.getBoundingClientRect().bottom;
@@ -77,7 +86,7 @@ class Ui {
         // If the anchor exists
         if (dataTarget) {
           // Scroll to the anchor
-          instance.smoothScroll(dataTarget, dataSpeed || 300);
+          instance.smoothScroll(dataTarget, dataSpeed || 3000);
 
           // Push new state history to dynamically change the URL
           if(history.pushState) {
@@ -128,10 +137,9 @@ class Ui {
   }
 
   enableUi() {
-    instance.scrollAnchor();
+    // instance.scrollAnchor();
     instance.navScroll();
   }
-
 }
 
 const Instance = new Ui();
